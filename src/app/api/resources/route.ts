@@ -59,7 +59,9 @@ export async function POST(req: NextRequest) {
         );
       }
 
-      const uploadsDir = path.join(process.cwd(), "public", "uploads");
+      const uploadsDir = process.env.VERCEL
+        ? path.join("/tmp", "uploads")
+        : path.join(process.cwd(), "public", "uploads");
       if (!fs.existsSync(uploadsDir)) {
         fs.mkdirSync(uploadsDir, { recursive: true });
       }

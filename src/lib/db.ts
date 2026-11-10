@@ -3,7 +3,9 @@ import fs from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 import { AcademicResource } from "./ensb-data";
 
-const DATA_DIR = path.join(process.cwd(), "data");
+const DATA_DIR = process.env.VERCEL
+  ? path.join("/tmp", "data")
+  : path.join(process.cwd(), "data");
 const DB_PATH = path.join(DATA_DIR, "ensb-archive.sqlite");
 
 let dbInstance: DatabaseSync | null = null;
@@ -12,6 +14,17 @@ function getDb(): DatabaseSync {
   if (!dbInstance) {
     if (!fs.existsSync(DATA_DIR)) {
       fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+    // If running in a serverless environment (like Vercel), copy existing seed database to /tmp
+    if (process.env.VERCEL && !fs.existsSync(DB_PATH)) {
+      const seedPath = path.join(process.cwd(), "data", "ensb-archive.sqlite");
+      if (fs.existsSync(seedPath)) {
+        try {
+          fs.copyFileSync(seedPath, DB_PATH);
+        } catch (e) {
+          console.warn("Could not copy seed database to /tmp:", e);
+        }
+      }
     }
     dbInstance = new DatabaseSync(DB_PATH);
     dbInstance.exec(`
