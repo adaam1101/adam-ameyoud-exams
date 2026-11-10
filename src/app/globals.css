@@ -1,26 +1,314 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *, .dark, .dark *));
+
+:root,
+[data-theme="light"] {
+  --font-handwriting: var(--font-handwriting), "Caveat", cursive;
+  --font-typewriter: var(--font-typewriter), "Special Elite", "Courier New", monospace;
+  --font-calligraphy: var(--font-amiri), serif;
+  --font-ui: var(--font-sans), var(--font-cairo), sans-serif;
+
+  /* Official ENSB Crest Colors */
+  --ensb-green: #0D7A3E;
+  --ensb-green-dark: #074723;
+  --ensb-green-light: #E7F6ED;
+  --ensb-quill: #D7262D;
+  --ensb-quill-dark: #A9141A;
+  --ensb-quill-light: #FDE8E9;
+  
+  /* Archival Manila & Paper Textures (Light Mode) */
+  --manila-bg: #F5EFEB;
+  --manila-card: #FCFAF6;
+  --manila-folder-tab: #EADBCA;
+  --manila-border: #C8B9A6;
+  --card-inner: #F8F3EA;
+  --ink-primary: #122419;
+  --ink-secondary: #3D4F44;
+  --ink-muted: #5E7065;
+  --paper-seam: rgba(13, 122, 62, 0.08);
+  --paperclip-color: #9A8A78;
+  --heading-green: #074723;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html.dark,
+:root.dark,
+[data-theme="dark"],
+html[data-theme="dark"] {
+  /* Archival Dark Mode: Nighttime University Library & Rich Leather Cardstock */
+  --ensb-green: #22C55E;
+  --ensb-green-dark: #15803D;
+  --ensb-green-light: #122B1C;
+  --ensb-quill: #EF4444;
+  --ensb-quill-dark: #DC2626;
+  --ensb-quill-light: #331518;
+
+  --manila-bg: #07120C;
+  --manila-card: #0F1E16;
+  --manila-folder-tab: #172D21;
+  --manila-border: #244633;
+  --card-inner: #15291F;
+  --ink-primary: #EDF5F0;
+  --ink-secondary: #B4C7BC;
+  --ink-muted: #7E9687;
+  --paper-seam: rgba(34, 197, 94, 0.12);
+  --paperclip-color: #5A7E6A;
+  --heading-green: #22C55E;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--manila-bg);
+  color: var(--ink-primary);
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--manila-bg);
+  color: var(--ink-primary);
+  font-family: var(--font-ui);
+  min-height: 100dvh;
+  background-image: 
+    radial-gradient(var(--paper-seam) 1px, transparent 1px),
+    radial-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: 0 0, 10px 10px;
+}
+
+[dir="rtl"] body {
+  font-family: var(--font-cairo), sans-serif;
+}
+
+/* Handwritten Typography */
+.font-hand {
+  font-family: var(--font-handwriting), cursive;
+}
+
+/* Retro Typewriter / Stamped Typography */
+.font-typewriter {
+  font-family: var(--font-typewriter), monospace;
+}
+
+/* Arabic Traditional Reed Pen Calligraphy */
+.font-calligraphy {
+  font-family: var(--font-calligraphy), serif;
+}
+
+/* ==========================================================================
+   PHYSICAL FOLDER CARD COMPONENT (LIGHT & DARK THEMES)
+   ========================================================================== */
+.folder-container {
+  position: relative;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+}
+
+.folder-container:hover {
+  transform: translateY(-2px);
+}
+
+/* The Folder Tab Sticking Up */
+.folder-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px 4px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  font-family: var(--font-typewriter);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-weight: 700;
+  border: 2px solid var(--manila-border);
+  border-bottom: none;
+  background: var(--manila-folder-tab);
+  color: var(--ink-primary);
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.04);
+}
+
+.folder-tab.green-tab {
+  background: #0D7A3E;
+  color: #FFFFFF;
+  border-color: #074723;
+}
+
+.dark .folder-tab.green-tab,
+[data-theme="dark"] .folder-tab.green-tab {
+  background: #15803D;
+  color: #FFFFFF;
+  border-color: #22C55E;
+}
+
+.folder-tab.red-tab {
+  background: #D7262D;
+  color: #FFFFFF;
+  border-color: #A9141A;
+}
+
+.dark .folder-tab.red-tab,
+[data-theme="dark"] .folder-tab.red-tab {
+  background: #DC2626;
+  color: #FFFFFF;
+  border-color: #EF4444;
+}
+
+/* The Main Folder Body */
+.folder-body {
+  background: var(--manila-card);
+  border: 2px solid var(--manila-border);
+  border-radius: 0 10px 10px 10px;
+  padding: 18px 20px;
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.06),
+    0 2px 4px -2px rgba(0, 0, 0, 0.04);
+  position: relative;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+[dir="rtl"] .folder-body {
+  border-radius: 10px 0 10px 10px;
+}
+
+.folder-container.theme-green .folder-body {
+  border-color: var(--ensb-green);
+}
+
+.folder-container.theme-red .folder-body {
+  border-color: var(--ensb-quill);
+}
+
+/* ==========================================================================
+   AUTHENTIC RETRO STAMPS & INK SEALS
+   ========================================================================== */
+.stamp-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed currentColor;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: var(--font-typewriter);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transform: rotate(-2deg);
+  opacity: 0.95;
+  user-select: none;
+}
+
+.stamp-red {
+  color: var(--ensb-quill);
+  border-color: var(--ensb-quill);
+  background: var(--ensb-quill-light);
+}
+
+.stamp-green {
+  color: var(--ensb-green);
+  border-color: var(--ensb-green);
+  background: var(--ensb-green-light);
+}
+
+/* Stitched or Paperclip details */
+.paperclip {
+  width: 14px;
+  height: 38px;
+  border: 2px solid var(--paperclip-color);
+  border-radius: 8px;
+  position: absolute;
+  top: -12px;
+  right: 28px;
+  z-index: 10;
+  pointer-events: none;
+  background: transparent;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+[dir="rtl"] .paperclip {
+  right: auto;
+  left: 28px;
+}
+
+/* Mini Paperclip for Cards */
+.mini-paperclip {
+  width: 10px;
+  height: 26px;
+  border: 2px solid var(--paperclip-color);
+  border-radius: 6px;
+  position: absolute;
+  top: -8px;
+  right: 16px;
+  z-index: 10;
+  pointer-events: none;
+  background: transparent;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+[dir="rtl"] .mini-paperclip {
+  right: auto;
+  left: 16px;
+}
+
+/* Retro Filing Pocket Card */
+.retro-filing-card {
+  position: relative;
+  background: var(--card-inner);
+  border: 2px solid var(--manila-border);
+  border-radius: 0 8px 8px 8px;
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.05),
+    2px 2px 0 var(--manila-border);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+[dir="rtl"] .retro-filing-card {
+  border-radius: 8px 0 8px 8px;
+}
+
+.retro-filing-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 6px 12px rgba(0, 0, 0, 0.1),
+    3px 4px 0 var(--ensb-green);
+  border-color: var(--ensb-green);
+}
+
+.retro-card-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px 2px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  font-family: var(--font-typewriter);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border: 2px solid var(--manila-border);
+  border-bottom: none;
+  background: var(--manila-folder-tab);
+  color: var(--ink-primary);
+  position: relative;
+  top: 2px;
+  z-index: 2;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--manila-folder-tab);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--ensb-green);
+  border-radius: 4px;
 }
