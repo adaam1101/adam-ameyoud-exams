@@ -123,10 +123,11 @@ export default function LandingPage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5 font-typewriter">
                 {/* Card 1 */}
                 <div className="group flex flex-col">
-                  <div className="retro-card-tab">
+                  <div className="retro-card-tab green-tab">
                     <span>📁 PILIER 01 • STRUCTURATION</span>
                   </div>
                   <div className="retro-filing-card p-5 space-y-3 flex-1 flex flex-col justify-between">
+                    <div className="vintage-tape" />
                     <div className="mini-paperclip" />
                     <div className="space-y-2.5">
                       <div className="flex items-center justify-between">
@@ -142,18 +143,19 @@ export default function LandingPage() {
                         {t.card1Body}
                       </p>
                     </div>
-                    <div className="pt-2 border-t border-dashed border-[var(--manila-border)] font-hand text-base text-[var(--heading-green)] font-bold">
-                      ✎ « 8 Départements &amp; 4 Cursus Officiels »
+                    <div className="pt-2 border-t border-dashed border-[var(--manila-border)] font-hand text-lg text-[var(--heading-green)] font-bold">
+                      ✎ « 8 Départements &amp; 4 Cursus Officiels classés sans fouillis »
                     </div>
                   </div>
                 </div>
 
                 {/* Card 2 */}
                 <div className="group flex flex-col">
-                  <div className="retro-card-tab border-red-700/40 text-[#D7262D]">
+                  <div className="retro-card-tab red-tab">
                     <span>🛡️ PILIER 02 • 100% AUTHENTIQUE</span>
                   </div>
                   <div className="retro-filing-card p-5 space-y-3 flex-1 flex flex-col justify-between border-[#D7262D]/40">
+                    <div className="vintage-tape" />
                     <div className="mini-paperclip" />
                     <div className="space-y-2.5">
                       <div className="flex items-center justify-between">
@@ -169,18 +171,19 @@ export default function LandingPage() {
                         {t.card2Body}
                       </p>
                     </div>
-                    <div className="pt-2 border-t border-dashed border-[var(--manila-border)] font-hand text-base text-[#D7262D] font-bold">
-                      ✎ « Vrais examens passés par les étudiants »
+                    <div className="pt-2 border-t border-dashed border-[var(--manila-border)] font-hand text-lg text-[#D7262D] dark:text-[#F87171] font-bold">
+                      ✎ « Vrais examens passés par nos étudiants, zéro fake ! »
                     </div>
                   </div>
                 </div>
 
                 {/* Card 3 */}
                 <div className="group flex flex-col">
-                  <div className="retro-card-tab">
+                  <div className="retro-card-tab green-tab">
                     <span>🤝 PILIER 03 • ENTRAIDE</span>
                   </div>
                   <div className="retro-filing-card p-5 space-y-3 flex-1 flex flex-col justify-between">
+                    <div className="vintage-tape" />
                     <div className="mini-paperclip" />
                     <div className="space-y-2.5">
                       <div className="flex items-center justify-between">
@@ -196,8 +199,8 @@ export default function LandingPage() {
                         {t.card3Body}
                       </p>
                     </div>
-                    <div className="pt-2 border-t border-dashed border-[var(--manila-border)] font-hand text-base text-[var(--heading-green)] font-bold">
-                      ✎ « Pour nous et les promos futures »
+                    <div className="pt-2 border-t border-dashed border-[var(--manila-border)] font-hand text-lg text-[var(--heading-green)] font-bold">
+                      ✎ « Pour nous et pour chaque promo future de Bouzaréah »
                     </div>
                   </div>
                 </div>
@@ -212,7 +215,7 @@ export default function LandingPage() {
                       {t.paliersTitle} (CURSUS DE L&apos;ÉCOLE)
                     </span>
                   </div>
-                  <span className="text-[var(--ink-muted)] hidden sm:inline">ENS Bouzaréah</span>
+                  <span className="text-[var(--ink-muted)] hidden sm:inline font-mono">ENS Bouzaréah</span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-typewriter text-xs">
@@ -220,10 +223,11 @@ export default function LandingPage() {
                     const isRed = p.id === "MASTER";
                     return (
                       <div key={p.id} className="group flex flex-col">
-                        <div className={`retro-card-tab ${isRed ? "text-[#D7262D] border-[#D7262D]/40" : ""}`}>
+                        <div className={`retro-card-tab ${isRed ? "red-tab" : "green-tab"}`}>
                           <span>📁 DOSSIER 0{idx + 1} • {p.code}</span>
                         </div>
                         <div className="retro-filing-card p-4 space-y-2.5 flex-1 flex flex-col justify-between">
+                          <div className="vintage-tape" />
                           <div className="mini-paperclip" />
                           <div className="space-y-1.5">
                             <div className="flex items-center justify-between">
@@ -242,8 +246,8 @@ export default function LandingPage() {
                             </p>
                           </div>
                           <div className="pt-2 border-t border-dashed border-[var(--manila-border)] flex items-center justify-between text-[10px] text-[var(--ink-muted)]">
-                            <span className="font-hand text-sm text-[var(--heading-green)] font-bold">
-                              {p.id === "PAP" ? "✎ École Primaire" : p.id === "PEM" ? "✎ Collège (CEM)" : p.id === "PES" ? "✎ Lycée" : "✎ Recherche & Doctorat"}
+                            <span className="font-hand text-base text-[var(--heading-green)] font-bold">
+                              {p.id === "PAP" ? "✎ École Primaire" : p.id === "PEM" ? "✎ Collège (CEM)" : p.id === "PES" ? "✎ Enseignement Lycée" : "✎ Recherche & Doctorat"}
                             </span>
                             <span className="font-mono font-bold">ENSB</span>
                           </div>
@@ -270,36 +274,51 @@ export default function LandingPage() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 font-typewriter text-xs">
-                  {ENSB_DEPARTMENTS.map((dept, idx) => (
-                    <Link
-                      key={dept.id}
-                      href={`/archive?dept=${dept.id}`}
-                      className="group flex flex-col block transition-all"
-                    >
-                      <div className="retro-card-tab group-hover:bg-[#0D7A3E] group-hover:text-white transition-colors">
-                        <span>🏷️ DEP 0{idx + 1} • {dept.code}</span>
-                      </div>
-                      <div className="retro-filing-card p-3.5 space-y-2 flex-1 flex flex-col justify-between group-hover:border-[#0D7A3E]">
-                        <div className="flex items-start gap-2.5">
-                          <div className="w-8 h-8 rounded bg-[var(--manila-folder-tab)] border border-[var(--manila-border)] group-hover:border-[#0D7A3E] group-hover:bg-[#0D7A3E] group-hover:text-white text-[var(--heading-green)] font-extrabold flex items-center justify-center shrink-0 transition-colors shadow-2xs font-mono text-xs">
-                            0{idx + 1}
+                  {ENSB_DEPARTMENTS.map((dept, idx) => {
+                    const sampleNotes: Record<string, string> = {
+                      ARA: "النحو، البلاغة، الأدب",
+                      FRA: "Linguistique & Didactique",
+                      ANG: "Phonetics & Literature",
+                      HIS: "Histoire & Géographie",
+                      PHI: "Philosophie & Logique",
+                      AMZ: "Linguistique Tamazight",
+                      EPS: "Pédagogie & Biomécanique",
+                      EDU: "Psychologie & Pédagogie",
+                    };
+                    return (
+                      <Link
+                        key={dept.id}
+                        href={`/archive?dept=${dept.id}`}
+                        className="group flex flex-col block transition-all"
+                      >
+                        <div className="retro-card-tab green-tab group-hover:scale-102 transition-transform">
+                          <span>🏷️ DEP 0{idx + 1} • {dept.code}</span>
+                        </div>
+                        <div className="retro-filing-card p-3.5 space-y-2 flex-1 flex flex-col justify-between group-hover:border-[#0D7A3E]">
+                          <div className="mini-paperclip" />
+                          <div className="flex items-start gap-2.5">
+                            <div className="w-8 h-8 rounded bg-[var(--manila-folder-tab)] border border-[var(--manila-border)] group-hover:border-[#0D7A3E] group-hover:bg-[#0D7A3E] group-hover:text-white text-[var(--heading-green)] font-extrabold flex items-center justify-center shrink-0 transition-colors shadow-2xs font-mono text-xs">
+                              0{idx + 1}
+                            </div>
+                            <div className="min-w-0">
+                              <div className="font-extrabold text-[var(--ink-primary)] leading-tight text-xs group-hover:text-[var(--heading-green)] transition-colors">
+                                {dept.name[lang]}
+                              </div>
+                              <div className="text-[10px] text-[var(--ink-muted)] truncate mt-0.5">
+                                {dept.sampleModules.slice(0, 2).map((m) => m[lang]).join(", ")}...
+                              </div>
+                            </div>
                           </div>
-                          <div className="min-w-0">
-                            <div className="font-extrabold text-[var(--ink-primary)] leading-tight text-xs group-hover:text-[var(--heading-green)] transition-colors">
-                              {dept.name[lang]}
-                            </div>
-                            <div className="text-[10px] text-[var(--ink-muted)] truncate mt-0.5">
-                              {dept.sampleModules.slice(0, 2).map((m) => m[lang]).join(", ")}...
-                            </div>
+                          <div className="pt-1.5 border-t border-dashed border-[var(--manila-border)] flex items-center justify-between text-[10px]">
+                            <span className="font-hand text-sm text-[var(--heading-green)] font-bold">
+                              ✎ {sampleNotes[dept.code] || "Annales & Cours"}
+                            </span>
+                            <span className="font-bold text-[var(--heading-green)] group-hover:translate-x-1 transition-transform">→</span>
                           </div>
                         </div>
-                        <div className="pt-1.5 border-t border-dashed border-[var(--manila-border)] flex items-center justify-between text-[10px] text-[var(--ink-muted)]">
-                          <span className="font-bold text-[var(--heading-green)]">Voir Annales</span>
-                          <span className="font-bold group-hover:translate-x-1 transition-transform">→</span>
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -369,50 +388,68 @@ export default function LandingPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-typewriter text-xs">
                 {/* Official Email */}
                 <div className="flex flex-col">
-                  <div className="retro-card-tab">
-                    <span>✉️ COURRIEL ACADÉMIQUE</span>
+                  <div className="retro-card-tab green-tab">
+                    <span>✉️ DOSSIER CONTACT • EMAIL OFFICIEL</span>
                   </div>
                   <a
                     href="mailto:adam.ameyoud@ensb.dz"
-                    className="retro-filing-card p-4 hover:border-[#0D7A3E] transition-all flex items-center gap-3.5 shadow-2xs group flex-1"
+                    className="retro-filing-card p-4 hover:border-[#0D7A3E] transition-all flex flex-col justify-between shadow-2xs group flex-1"
                   >
+                    <div className="vintage-tape" />
                     <div className="mini-paperclip" />
-                    <div className="w-11 h-11 rounded-lg bg-[var(--ensb-green-light)] text-[var(--heading-green)] flex items-center justify-center shrink-0 border border-[var(--ensb-green)] group-hover:scale-105 transition-transform">
-                      <Mail className="w-5 h-5" />
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-11 h-11 rounded-lg bg-[var(--ensb-green-light)] text-[var(--heading-green)] flex items-center justify-center shrink-0 border border-[var(--ensb-green)] group-hover:scale-105 transition-transform">
+                        <Mail className="w-5 h-5" />
+                      </div>
+                      <div className="min-w-0">
+                        <span className="font-extrabold text-[var(--ink-muted)] block uppercase text-[10px]">
+                          {t.founderEmailLabel}
+                        </span>
+                        <span className="font-extrabold text-[var(--heading-green)] text-xs sm:text-sm truncate block mt-0.5 font-mono">
+                          adam.ameyoud@ensb.dz
+                        </span>
+                      </div>
                     </div>
-                    <div className="min-w-0">
-                      <span className="font-extrabold text-[var(--ink-muted)] block uppercase text-[10px]">
-                        {t.founderEmailLabel}
+                    <div className="pt-2 mt-3 border-t border-dashed border-[var(--manila-border)] flex items-center justify-between text-[11px]">
+                      <span className="font-hand text-base text-[var(--heading-green)] font-bold">
+                        ✎ « Écrivez-moi pour toute question ou envoi groupé »
                       </span>
-                      <span className="font-extrabold text-[var(--heading-green)] text-xs sm:text-sm truncate block mt-0.5">
-                        adam.ameyoud@ensb.dz
-                      </span>
+                      <span className="font-bold text-[var(--heading-green)] group-hover:translate-x-1 transition-transform">→</span>
                     </div>
                   </a>
                 </div>
 
                 {/* WhatsApp & Phone */}
                 <div className="flex flex-col">
-                  <div className="retro-card-tab border-emerald-600/40 text-[var(--heading-green)]">
-                    <span>💬 MESSAGERIE &amp; APPEL DIRECT</span>
+                  <div className="retro-card-tab green-tab">
+                    <span>💬 DOSSIER CONTACT • WHATSAPP DIRECT</span>
                   </div>
                   <a
                     href="https://wa.me/213795523399"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="retro-filing-card p-4 hover:border-[#0D7A3E] transition-all flex items-center gap-3.5 shadow-2xs group flex-1"
+                    className="retro-filing-card p-4 hover:border-[#0D7A3E] transition-all flex flex-col justify-between shadow-2xs group flex-1"
                   >
+                    <div className="vintage-tape" />
                     <div className="mini-paperclip" />
-                    <div className="w-11 h-11 rounded-lg bg-[var(--ensb-green-light)] text-[var(--heading-green)] flex items-center justify-center shrink-0 border border-[var(--ensb-green)] group-hover:scale-105 transition-transform">
-                      <Phone className="w-5 h-5" />
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-11 h-11 rounded-lg bg-[var(--ensb-green-light)] text-[var(--heading-green)] flex items-center justify-center shrink-0 border border-[var(--ensb-green)] group-hover:scale-105 transition-transform">
+                        <Phone className="w-5 h-5" />
+                      </div>
+                      <div className="min-w-0">
+                        <span className="font-extrabold text-[var(--ink-muted)] block uppercase text-[10px]">
+                          {t.founderPhoneLabel}
+                        </span>
+                        <span className="font-extrabold text-[var(--heading-green)] text-xs sm:text-sm block mt-0.5 font-mono" dir="ltr">
+                          +213 795 52 33 99
+                        </span>
+                      </div>
                     </div>
-                    <div className="min-w-0">
-                      <span className="font-extrabold text-[var(--ink-muted)] block uppercase text-[10px]">
-                        {t.founderPhoneLabel}
+                    <div className="pt-2 mt-3 border-t border-dashed border-[var(--manila-border)] flex items-center justify-between text-[11px]">
+                      <span className="font-hand text-base text-[var(--heading-green)] font-bold">
+                        ✎ « Disponible par message WhatsApp ou appel »
                       </span>
-                      <span className="font-extrabold text-[var(--heading-green)] text-xs sm:text-sm block mt-0.5 font-mono" dir="ltr">
-                        +213 795 52 33 99
-                      </span>
+                      <span className="font-bold text-[var(--heading-green)] group-hover:translate-x-1 transition-transform">→</span>
                     </div>
                   </a>
                 </div>

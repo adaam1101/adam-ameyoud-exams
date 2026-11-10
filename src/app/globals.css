@@ -4,11 +4,6 @@
 
 :root,
 [data-theme="light"] {
-  --font-handwriting: var(--font-handwriting), "Caveat", cursive;
-  --font-typewriter: var(--font-typewriter), "Special Elite", "Courier New", monospace;
-  --font-calligraphy: var(--font-amiri), serif;
-  --font-ui: var(--font-sans), var(--font-cairo), sans-serif;
-
   /* Official ENSB Crest Colors */
   --ensb-green: #0D7A3E;
   --ensb-green-dark: #074723;
@@ -27,7 +22,7 @@
   --ink-secondary: #3D4F44;
   --ink-muted: #5E7065;
   --paper-seam: rgba(13, 122, 62, 0.08);
-  --paperclip-color: #9A8A78;
+  --paperclip-color: #D4AF37;
   --heading-green: #074723;
 }
 
@@ -44,15 +39,15 @@ html[data-theme="dark"] {
   --ensb-quill-light: #331518;
 
   --manila-bg: #07120C;
-  --manila-card: #0F1E16;
-  --manila-folder-tab: #172D21;
-  --manila-border: #244633;
-  --card-inner: #15291F;
-  --ink-primary: #EDF5F0;
-  --ink-secondary: #B4C7BC;
-  --ink-muted: #7E9687;
-  --paper-seam: rgba(34, 197, 94, 0.12);
-  --paperclip-color: #5A7E6A;
+  --manila-card: #0F2317;
+  --manila-folder-tab: #163625;
+  --manila-border: #265438;
+  --card-inner: #112A1C;
+  --ink-primary: #EDF7F1;
+  --ink-secondary: #B8CDC2;
+  --ink-muted: #829D8D;
+  --paper-seam: rgba(34, 197, 94, 0.15);
+  --paperclip-color: #F59E0B;
   --heading-green: #22C55E;
 }
 
@@ -235,24 +230,59 @@ body {
   left: 28px;
 }
 
-/* Mini Paperclip for Cards */
+/* Mini Dual-Wire Metallic Paperclip */
 .mini-paperclip {
-  width: 10px;
-  height: 26px;
-  border: 2px solid var(--paperclip-color);
-  border-radius: 6px;
+  width: 14px;
+  height: 32px;
+  border: 2.5px solid var(--paperclip-color);
+  border-bottom: none;
+  border-radius: 7px 7px 0 0;
   position: absolute;
-  top: -8px;
-  right: 16px;
+  top: -12px;
+  right: 18px;
   z-index: 10;
   pointer-events: none;
   background: transparent;
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, 0.45));
+}
+
+.mini-paperclip::after {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 2px;
+  width: 6px;
+  height: 20px;
+  border: 2px solid var(--paperclip-color);
+  border-top: none;
+  border-radius: 0 0 5px 5px;
 }
 
 [dir="rtl"] .mini-paperclip {
   right: auto;
-  left: 16px;
+  left: 18px;
+}
+
+/* Translucent Archival Masking Tape */
+.vintage-tape {
+  position: absolute;
+  top: -7px;
+  left: 20px;
+  width: 50px;
+  height: 16px;
+  background: rgba(234, 219, 185, 0.7);
+  border-left: 2px dashed rgba(180, 160, 120, 0.4);
+  border-right: 2px dashed rgba(180, 160, 120, 0.4);
+  transform: rotate(-3deg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+  z-index: 9;
+}
+
+.dark .vintage-tape,
+[data-theme="dark"] .vintage-tape {
+  background: rgba(245, 158, 11, 0.28);
+  border-color: rgba(245, 158, 11, 0.45);
 }
 
 /* Retro Filing Pocket Card */
@@ -260,36 +290,36 @@ body {
   position: relative;
   background: var(--card-inner);
   border: 2px solid var(--manila-border);
-  border-radius: 0 8px 8px 8px;
+  border-radius: 0 10px 10px 10px;
   box-shadow: 
-    0 2px 4px rgba(0, 0, 0, 0.05),
-    2px 2px 0 var(--manila-border);
+    0 3px 6px rgba(0, 0, 0, 0.08),
+    3px 3px 0 var(--manila-border);
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 [dir="rtl"] .retro-filing-card {
-  border-radius: 8px 0 8px 8px;
+  border-radius: 10px 0 10px 10px;
 }
 
 .retro-filing-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   box-shadow: 
-    0 6px 12px rgba(0, 0, 0, 0.1),
-    3px 4px 0 var(--ensb-green);
+    0 10px 20px rgba(0, 0, 0, 0.15),
+    4px 5px 0 var(--ensb-green);
   border-color: var(--ensb-green);
 }
 
 .retro-card-tab {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 3px 10px 2px;
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
+  gap: 5px;
+  padding: 4px 12px 3px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 12px;
   font-family: var(--font-typewriter);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
   text-transform: uppercase;
   border: 2px solid var(--manila-border);
   border-bottom: none;
@@ -298,6 +328,45 @@ body {
   position: relative;
   top: 2px;
   z-index: 2;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.retro-card-tab.red-tab {
+  background: #D7262D;
+  color: #FFFFFF;
+  border-color: #A9141A;
+}
+
+.dark .retro-card-tab.red-tab,
+[data-theme="dark"] .retro-card-tab.red-tab {
+  background: #3B1215;
+  color: #FCA5A5;
+  border-color: #EF4444;
+}
+
+.retro-card-tab.green-tab {
+  background: #0D7A3E;
+  color: #FFFFFF;
+  border-color: #074723;
+}
+
+.dark .retro-card-tab.green-tab,
+[data-theme="dark"] .retro-card-tab.green-tab {
+  background: #143322;
+  color: #86EFAC;
+  border-color: #22C55E;
+}
+
+/* Handwritten highlight wash */
+.hand-marker {
+  background: linear-gradient(120deg, rgba(254, 240, 138, 0.4) 0%, rgba(254, 240, 138, 0.7) 100%);
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+.dark .hand-marker,
+[data-theme="dark"] .hand-marker {
+  background: linear-gradient(120deg, rgba(34, 197, 94, 0.2) 0%, rgba(34, 197, 94, 0.35) 100%);
 }
 
 /* Custom Scrollbars */
