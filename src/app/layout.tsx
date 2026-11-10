@@ -34,9 +34,9 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "ENSB Student Archive | أرشيف طلبة المدرسة العليا للأساتذة ببوزريعة — Adam Ameyoud",
+  title: "ENSB Library | مكتبة المدرسة العليا للأساتذة ببوزريعة — Adam Ameyoud",
   description:
-    "Retro academic archive and exam dossiers for the students of École Normale Supérieure de Bouzaréah (ENSB). Designed by Adam Ameyoud.",
+    "Retro academic library and past exam archive for the students of École Normale Supérieure de Bouzaréah (ENSB). Designed by Adam Ameyoud.",
   icons: {
     icon: "/ensb-logo.webp",
   },

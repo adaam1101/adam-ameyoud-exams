@@ -140,7 +140,7 @@ export const TRANSLATIONS: Record<Language, TranslationsSchema> = {
     schoolMinistry: "الجمهورية الجزائرية الديمقراطية الشعبية — وزارة التعليم العالي والبحث العلمي",
     schoolOfficialName: "المدرسة العليا للأساتذة ببوزريعة",
     schoolSubName: "المدرسة العليا للأساتذة الشيخ مبارك بن محمد إبراهيمي الميلي — بوزريعة، الجزائر",
-    platformName: "أرشيف طلبة بوزريعة (ENSB)",
+    platformName: "مكتبة بوزريعة (ENSB Library)",
 
     navHome: "الرئيسية والتعريف",
     navArchive: "أرشيف الامتحانات والدروس",
@@ -271,7 +271,7 @@ export const TRANSLATIONS: Record<Language, TranslationsSchema> = {
     schoolMinistry: "République Algérienne Démocratique et Populaire — Ministère de l'Enseignement Supérieur",
     schoolOfficialName: "École Normale Supérieure de Bouzaréah (ENSB)",
     schoolSubName: "ENS Cheikh Mebarek Ben Mohamed Brahimi El Mili — Bouzaréah, Alger",
-    platformName: "Archives Étudiantes ENSB",
+    platformName: "ENSB Library (Bibliothèque)",
 
     navHome: "Accueil & Mission",
     navArchive: "Classeur des Examens",
@@ -402,7 +402,7 @@ export const TRANSLATIONS: Record<Language, TranslationsSchema> = {
     schoolMinistry: "People's Democratic Republic of Algeria — Ministry of Higher Education",
     schoolOfficialName: "Higher Normal School of Bouzaréah (ENSB)",
     schoolSubName: "ENS Cheikh Mebarek Ben Mohamed Brahimi El Mili — Bouzaréah, Algiers",
-    platformName: "ENSB Student Archive",
+    platformName: "ENSB Library",
 
     navHome: "Home & Purpose",
     navArchive: "Exams & Course Folders",
