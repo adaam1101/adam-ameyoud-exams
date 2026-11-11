@@ -2,6 +2,7 @@ import path from "node:path";
 import fs from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 import { AcademicResource } from "./ensb-data";
+import { SEED_RESOURCES } from "./seed-data";
 
 const DATA_DIR = process.env.VERCEL
   ? path.join("/tmp", "data")
@@ -67,7 +68,7 @@ export function listResources(): AcademicResource[] {
     ORDER BY datetime(createdAt) DESC
   `);
   const rows = stmt.all() as Record<string, unknown>[];
-  return rows.map((row) => ({
+  const dbResources: AcademicResource[] = rows.map((row) => ({
     id: String(row.id),
     title: String(row.title),
     departmentId: String(row.departmentId),
@@ -90,6 +91,20 @@ export function listResources(): AcademicResource[] {
     downloads: Number(row.downloads ?? 0),
     createdAt: String(row.createdAt),
   }));
+
+  // Merge seed items with database items, database items taking priority
+  const seenIds = new Set(dbResources.map((r) => r.id));
+  const combined = [...dbResources];
+  for (const seed of SEED_RESOURCES) {
+    if (!seenIds.has(seed.id)) {
+      combined.push(seed);
+    }
+  }
+
+  // Sort descending by date
+  return combined.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
 }
 
 export function createResource(resource: AcademicResource): AcademicResource {
