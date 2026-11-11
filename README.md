@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ENSB Library (مكتبة المدرسة العليا للأساتذة ببوزريعة)
 
-## Getting Started
+> **Official Live Production URL:** [https://ensblibrary.vercel.app](https://ensblibrary.vercel.app)  
+> **Alternate URL:** [https://ensb-library.vercel.app](https://ensb-library.vercel.app)
 
-First, run the development server:
+A retro-styled dedicated academic archive and past exam library for students and professors of the **École Normale Supérieure de Bouzaréah (ENSB)**, Algiers (*ENS Cheikh Mebarek Ben Mohamed Brahimi El Mili*).
+
+Designed and maintained as an open student initiative by **Adam Ameyoud** (`adam.ameyoud@ensb.dz` • `+213 795 52 33 99`).
+
+---
+
+## 🏛️ Academic Structure
+
+- **4 Official Degree Tracks (Cursus)**:
+  - **PAP** (Primaire — 3 Ans)
+  - **PEM** (Moyen / CEM — 4 Ans)
+  - **PES** (Secondaire / Lycée — 5 Ans)
+  - **MASTER** (Postgraduation & Recherche)
+
+- **8 Official Academic Departments**:
+  1. Department of Arabic Language & Literature
+  2. Department of French Language
+  3. Department of English Language
+  4. Department of History & Geography
+  5. Department of Philosophy
+  6. Department of Amazigh Language & Culture
+  7. Department of Physical & Sports Education (EPS)
+  8. Department of Educational Sciences
+
+---
+
+## 🎨 Visual Identity & Architecture
+
+- **Retro Archival Aesthetic**: Real physical folder dossiers, protruding cut-out tabs, brass dual-wire paperclips, rubber ink stamps, and authentic handwritten cursive notes.
+- **ENSB Crest Colors**: Algerian Academic Green (`#0D7A3E`), Quill Red (`#D7262D`), Manila/Parchment (`#F5EFEB`), and Brass/Gold (`#D4AF37`).
+- **Dark & Light Mode**: Nighttime library book-binder leather cardstock vs. vintage manila parchment.
+- **Trilingual Support**: Arabic (RTL, Cairo & Amiri fonts), French, and English.
+- **Dedicated Single-Page Quick Deposit (`/share`)**: Streamlined 3-step upload with drag-and-drop file attachment (up to 25 MB) or Google Drive link.
+
+---
+
+## 🚀 Development
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev -- --port 3030
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Deployable natively to [Vercel](https://vercel.com) with edge-ready caching and serverless storage.
