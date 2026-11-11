@@ -13,7 +13,11 @@ const MIME_TYPES: Record<string, string> = {
   ".webp": "image/webp",
   ".doc": "application/msword",
   ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  ".txt": "text/plain",
+  ".ppt": "application/vnd.ms-powerpoint",
+  ".pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  ".xls": "application/vnd.ms-excel",
+  ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  ".txt": "text/plain; charset=utf-8",
 };
 
 export async function GET(
@@ -44,22 +48,25 @@ export async function GET(
       headers: {
         "Content-Type": contentType,
         "Content-Disposition": `inline; filename="${safeName}"`,
+        "X-Content-Type-Options": "nosniff",
         "Cache-Control": "public, max-age=31536000, immutable",
       },
     });
   }
 
   // Fallback to Supabase Storage bucket 'ensb-documents'
-  try {
-    const { data: publicUrlData } = supabase.storage
-      .from("ensb-documents")
-      .getPublicUrl(safeName);
+  if (supabase) {
+    try {
+      const { data: publicUrlData } = supabase.storage
+        .from("ensb-documents")
+        .getPublicUrl(safeName);
 
-    if (publicUrlData?.publicUrl) {
-      return NextResponse.redirect(publicUrlData.publicUrl, 307);
+      if (publicUrlData?.publicUrl) {
+        return NextResponse.redirect(publicUrlData.publicUrl, 307);
+      }
+    } catch (err) {
+      console.warn("Could not retrieve file from Supabase storage fallback:", err);
     }
-  } catch (err) {
-    console.warn("Could not retrieve file from Supabase storage fallback:", err);
   }
 
   return new NextResponse("File not found in archives", { status: 404 });

@@ -64,40 +64,42 @@ export async function listResources(): Promise<AcademicResource[]> {
   let remoteResources: AcademicResource[] = [];
 
   // 1. Try fetching from Supabase (Centralized, Persistent Cloud DB)
-  try {
-    const { data, error } = await supabase
-      .from("resources")
-      .select("*")
-      .eq("status", "published")
-      .order("created_at", { ascending: false });
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from("resources")
+        .select("*")
+        .eq("status", "published")
+        .order("created_at", { ascending: false });
 
-    if (!error && Array.isArray(data) && data.length > 0) {
-      remoteResources = data.map((row: Record<string, unknown>) => ({
-        id: String(row.id),
-        title: String(row.title),
-        departmentId: String(row.department_id || row.departmentId),
-        palierId: String(row.palier_id || row.palierId) as AcademicResource["palierId"],
-        yearLevel: Number(row.year_level ?? row.yearLevel ?? 1),
-        semester: String(row.semester) as AcademicResource["semester"],
-        resourceType: String(row.resource_type || row.resourceType) as AcademicResource["resourceType"],
-        moduleName: String(row.module_name || row.moduleName),
-        academicYear: String(row.academic_year || row.academicYear),
-        professorName: row.professor_name ? String(row.professor_name) : undefined,
-        description: row.description ? String(row.description) : undefined,
-        fileUrl: row.file_url ? String(row.file_url) : undefined,
-        fileName: row.file_name ? String(row.file_name) : undefined,
-        fileSize: row.file_size ? Number(row.file_size) : undefined,
-        externalUrl: row.external_url ? String(row.external_url) : undefined,
-        contributorName: String(row.contributor_name || row.contributorName),
-        contributorEmail: row.contributor_email ? String(row.contributor_email) : undefined,
-        contributorLevel: row.contributor_level ? String(row.contributor_level) : undefined,
-        status: String(row.status) as AcademicResource["status"],
-        downloads: Number(row.downloads ?? 0),
-        createdAt: String(row.created_at || row.createdAt),
-      }));
+      if (!error && Array.isArray(data) && data.length > 0) {
+        remoteResources = data.map((row: Record<string, unknown>) => ({
+          id: String(row.id),
+          title: String(row.title),
+          departmentId: String(row.department_id || row.departmentId),
+          palierId: String(row.palier_id || row.palierId) as AcademicResource["palierId"],
+          yearLevel: Number(row.year_level ?? row.yearLevel ?? 1),
+          semester: String(row.semester) as AcademicResource["semester"],
+          resourceType: String(row.resource_type || row.resourceType) as AcademicResource["resourceType"],
+          moduleName: String(row.module_name || row.moduleName),
+          academicYear: String(row.academic_year || row.academicYear),
+          professorName: row.professor_name ? String(row.professor_name) : undefined,
+          description: row.description ? String(row.description) : undefined,
+          fileUrl: row.file_url ? String(row.file_url) : undefined,
+          fileName: row.file_name ? String(row.file_name) : undefined,
+          fileSize: row.file_size ? Number(row.file_size) : undefined,
+          externalUrl: row.external_url ? String(row.external_url) : undefined,
+          contributorName: String(row.contributor_name || row.contributorName),
+          contributorEmail: row.contributor_email ? String(row.contributor_email) : undefined,
+          contributorLevel: row.contributor_level ? String(row.contributor_level) : undefined,
+          status: String(row.status) as AcademicResource["status"],
+          downloads: Number(row.downloads ?? 0),
+          createdAt: String(row.created_at || row.createdAt),
+        }));
+      }
+    } catch (err) {
+      console.warn("Supabase fetch failed, falling back to local storage:", err);
     }
-  } catch (err) {
-    console.warn("Supabase fetch failed, falling back to local storage:", err);
   }
 
   // 2. Fetch from local SQLite cache
@@ -160,36 +162,38 @@ export async function listResources(): Promise<AcademicResource[]> {
 
 export async function createResource(resource: AcademicResource): Promise<AcademicResource> {
   // 1. Insert into Supabase (Persists globally across all Vercel instances)
-  try {
-    const { error } = await supabase.from("resources").insert({
-      id: resource.id,
-      title: resource.title,
-      department_id: resource.departmentId,
-      palier_id: resource.palierId,
-      year_level: resource.yearLevel,
-      semester: resource.semester,
-      resource_type: resource.resourceType,
-      module_name: resource.moduleName,
-      academic_year: resource.academicYear,
-      professor_name: resource.professorName ?? null,
-      description: resource.description ?? null,
-      file_url: resource.fileUrl ?? null,
-      file_name: resource.fileName ?? null,
-      file_size: resource.fileSize ?? null,
-      external_url: resource.externalUrl ?? null,
-      contributor_name: resource.contributorName,
-      contributor_email: resource.contributorEmail ?? null,
-      contributor_level: resource.contributorLevel ?? null,
-      status: resource.status,
-      downloads: resource.downloads,
-      created_at: resource.createdAt,
-    });
+  if (supabase) {
+    try {
+      const { error } = await supabase.from("resources").insert({
+        id: resource.id,
+        title: resource.title,
+        department_id: resource.departmentId,
+        palier_id: resource.palierId,
+        year_level: resource.yearLevel,
+        semester: resource.semester,
+        resource_type: resource.resourceType,
+        module_name: resource.moduleName,
+        academic_year: resource.academicYear,
+        professor_name: resource.professorName ?? null,
+        description: resource.description ?? null,
+        file_url: resource.fileUrl ?? null,
+        file_name: resource.fileName ?? null,
+        file_size: resource.fileSize ?? null,
+        external_url: resource.externalUrl ?? null,
+        contributor_name: resource.contributorName,
+        contributor_email: resource.contributorEmail ?? null,
+        contributor_level: resource.contributorLevel ?? null,
+        status: resource.status,
+        downloads: resource.downloads,
+        created_at: resource.createdAt,
+      });
 
-    if (error) {
-      console.warn("Supabase insert warning:", error);
+      if (error) {
+        console.warn("Supabase insert warning:", error);
+      }
+    } catch (err) {
+      console.warn("Supabase insert failed, continuing with local:", err);
     }
-  } catch (err) {
-    console.warn("Supabase insert failed, continuing with local:", err);
   }
 
   // 2. Insert into local SQLite cache
@@ -241,10 +245,12 @@ export async function createResource(resource: AcademicResource): Promise<Academ
 }
 
 export async function incrementDownloadCount(id: string): Promise<void> {
-  try {
-    await supabase.rpc("increment_downloads", { resource_id: id });
-  } catch {
-    // fallback
+  if (supabase) {
+    try {
+      await supabase.rpc("increment_downloads", { resource_id: id });
+    } catch {
+      // fallback
+    }
   }
 
   try {
@@ -259,11 +265,13 @@ export async function incrementDownloadCount(id: string): Promise<void> {
 export async function deleteResourceById(id: string): Promise<boolean> {
   let deleted = false;
 
-  try {
-    const { error } = await supabase.from("resources").delete().eq("id", id);
-    if (!error) deleted = true;
-  } catch (err) {
-    console.warn("Supabase delete failed:", err);
+  if (supabase) {
+    try {
+      const { error } = await supabase.from("resources").delete().eq("id", id);
+      if (!error) deleted = true;
+    } catch (err) {
+      console.warn("Supabase delete failed:", err);
+    }
   }
 
   try {
