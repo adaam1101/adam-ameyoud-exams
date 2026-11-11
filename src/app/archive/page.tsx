@@ -37,6 +37,7 @@ function ArchiveContent() {
   const searchParams = useSearchParams();
 
   const [resources, setResources] = useState<AcademicResource[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDept, setSelectedDept] = useState<string>("all");
   const [selectedPalier, setSelectedPalier] = useState<string>("all");
@@ -55,14 +56,20 @@ function ArchiveContent() {
 
   // Fetch live resources from API
   useEffect(() => {
+    setIsLoading(true);
     fetch("/api/resources")
       .then((res) => res.json())
       .then((data) => {
-        if (data.resources) {
+        if (Array.isArray(data.resources)) {
           setResources(data.resources);
         }
       })
-      .catch(() => {});
+      .catch((err) => {
+        console.warn("Failed to fetch archive resources:", err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   const selectedDeptObj = useMemo(
@@ -375,7 +382,16 @@ function ArchiveContent() {
       {/* =========================================================================
           THE FOLDER CARDS GRID
           ========================================================================= */}
-      {filteredResources.length === 0 ? (
+      {isLoading ? (
+        <div className="folder-container theme-green max-w-xl mx-auto my-12 text-center p-8 space-y-4">
+          <div className="w-10 h-10 border-4 border-[#0D7A3E] border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="font-typewriter text-xs text-[var(--ink-secondary)]">
+            {lang === "ar"
+              ? "جاري فتح وفحص سجلات الأرشيف الأكاديمي..."
+              : "Ouverture du classeur et consultation des archives académiques..."}
+          </p>
+        </div>
+      ) : filteredResources.length === 0 ? (
         <div className="folder-container theme-green max-w-2xl mx-auto my-8">
           <div className="folder-tab green-tab">
             <span>{t.emptyArchiveTitle}</span>

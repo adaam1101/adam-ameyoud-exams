@@ -3,13 +3,14 @@ import path from "node:path";
 import fs from "node:fs";
 import crypto from "node:crypto";
 import { createResource, listResources } from "@/lib/db";
+import { supabase } from "@/lib/supabase";
 import { AcademicResource } from "@/lib/ensb-data";
 
 export const runtime = "nodejs";
 
 export async function GET() {
   try {
-    const resources = listResources();
+    const resources = await listResources();
     return NextResponse.json({ resources });
   } catch (error) {
     console.error("Failed to list resources:", error);
@@ -59,22 +60,51 @@ export async function POST(req: NextRequest) {
         );
       }
 
-      const uploadsDir = process.env.VERCEL
-        ? path.join("/tmp", "uploads")
-        : path.join(process.cwd(), "public", "uploads");
-      if (!fs.existsSync(uploadsDir)) {
-        fs.mkdirSync(uploadsDir, { recursive: true });
-      }
-
       const safeOriginalName = fileEntry.name.replace(/[^a-zA-Z0-9._-\u0600-\u06FF]/g, "_");
       const uniquePrefix = `${Date.now()}-${crypto.randomBytes(4).toString("hex")}`;
       const storedFileName = `${uniquePrefix}-${safeOriginalName}`;
-      const destPath = path.join(uploadsDir, storedFileName);
 
       const arrayBuffer = await fileEntry.arrayBuffer();
-      fs.writeFileSync(destPath, Buffer.from(arrayBuffer));
+      const buffer = Buffer.from(arrayBuffer);
 
-      fileUrl = `/uploads/${storedFileName}`;
+      // 1. Upload to Supabase Storage bucket 'ensb-documents' (Global, Persistent, High-Availability)
+      try {
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from("ensb-documents")
+          .upload(storedFileName, buffer, {
+            contentType: fileEntry.type || "application/octet-stream",
+            upsert: true,
+          });
+
+        if (!uploadError && uploadData) {
+          const { data: publicUrlData } = supabase.storage
+            .from("ensb-documents")
+            .getPublicUrl(storedFileName);
+          fileUrl = publicUrlData.publicUrl;
+        } else if (uploadError) {
+          console.warn("Supabase storage upload error:", uploadError.message);
+        }
+      } catch (storageErr) {
+        console.warn("Supabase storage upload exception:", storageErr);
+      }
+
+      // 2. Local filesystem write fallback
+      try {
+        const uploadsDir = process.env.VERCEL
+          ? path.join("/tmp", "uploads")
+          : path.join(process.cwd(), "public", "uploads");
+        if (!fs.existsSync(uploadsDir)) {
+          fs.mkdirSync(uploadsDir, { recursive: true });
+        }
+        const destPath = path.join(uploadsDir, storedFileName);
+        fs.writeFileSync(destPath, buffer);
+        if (!fileUrl) {
+          fileUrl = `/uploads/${storedFileName}`;
+        }
+      } catch (fsErr) {
+        console.warn("Local filesystem write fallback failed:", fsErr);
+      }
+
       fileName = fileEntry.name;
       fileSize = fileEntry.size;
     }
@@ -109,12 +139,16 @@ export async function POST(req: NextRequest) {
       createdAt: new Date().toISOString(),
     };
 
-    const created = createResource(newResource);
-    return NextResponse.json({ resource: created }, { status: 201 });
+    const created = await createResource(newResource);
+
+    return NextResponse.json({
+      ok: true,
+      resource: created,
+    });
   } catch (error) {
-    console.error("Failed to create resource:", error);
+    console.error("Failed to process resource upload:", error);
     return NextResponse.json(
-      { error: "An error occurred while saving your contribution." },
+      { error: "Internal server error occurred while publishing the document." },
       { status: 500 }
     );
   }

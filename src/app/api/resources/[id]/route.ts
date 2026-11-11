@@ -9,7 +9,7 @@ export async function PATCH(
 ) {
   try {
     const { id } = await context.params;
-    incrementDownloadCount(id);
+    await incrementDownloadCount(id);
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("Failed to increment download count:", error);
@@ -27,7 +27,7 @@ export async function DELETE(
     if (pin !== "2026") {
       return NextResponse.json({ error: "Invalid Admin PIN" }, { status: 403 });
     }
-    const deleted = deleteResourceById(id);
+    const deleted = await deleteResourceById(id);
     return NextResponse.json({ deleted });
   } catch (error) {
     console.error("Failed to delete resource:", error);

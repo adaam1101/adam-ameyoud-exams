@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import path from "node:path";
 import fs from "node:fs";
+import { supabase } from "@/lib/supabase";
 
 export const runtime = "nodejs";
 
@@ -33,20 +34,33 @@ export async function GET(
 
   const targetPath = path.join(baseDir, safeName);
 
-  if (!fs.existsSync(/*turbopackIgnore: true*/ targetPath)) {
-    return new NextResponse("File not found in archives", { status: 404 });
+  if (fs.existsSync(/*turbopackIgnore: true*/ targetPath)) {
+    const ext = path.extname(safeName).toLowerCase();
+    const contentType = MIME_TYPES[ext] || "application/octet-stream";
+    const fileBuffer = fs.readFileSync(/*turbopackIgnore: true*/ targetPath);
+
+    return new NextResponse(fileBuffer, {
+      status: 200,
+      headers: {
+        "Content-Type": contentType,
+        "Content-Disposition": `inline; filename="${safeName}"`,
+        "Cache-Control": "public, max-age=31536000, immutable",
+      },
+    });
   }
 
-  const ext = path.extname(safeName).toLowerCase();
-  const contentType = MIME_TYPES[ext] || "application/octet-stream";
-  const fileBuffer = fs.readFileSync(/*turbopackIgnore: true*/ targetPath);
+  // Fallback to Supabase Storage bucket 'ensb-documents'
+  try {
+    const { data: publicUrlData } = supabase.storage
+      .from("ensb-documents")
+      .getPublicUrl(safeName);
 
-  return new NextResponse(fileBuffer, {
-    status: 200,
-    headers: {
-      "Content-Type": contentType,
-      "Content-Disposition": `inline; filename="${safeName}"`,
-      "Cache-Control": "public, max-age=31536000, immutable",
-    },
-  });
+    if (publicUrlData?.publicUrl) {
+      return NextResponse.redirect(publicUrlData.publicUrl, 307);
+    }
+  } catch (err) {
+    console.warn("Could not retrieve file from Supabase storage fallback:", err);
+  }
+
+  return new NextResponse("File not found in archives", { status: 404 });
 }
